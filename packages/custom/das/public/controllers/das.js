@@ -1,19 +1,46 @@
 'use strict';
 
+/*
+	Angular Controller
+
+	Logic atm is here
+*/
+
 /* jshint -W098 */
-angular.module('mean.das', ["chart.js"]).controller('DasController', ['$scope', 'Global', 'Das',
-  function($scope, Global, Das) {
+angular.module('mean.das', ["chart.js"]).controller('DasController', ['$scope', 'Global', 'Speedup',
+  function($scope, Global, Speedup) {
     $scope.global = Global;
     $scope.package = {
       name: 'das'
     };
+
+    $scope.getAllSpeedups = function() {
+    	//console.log(Speedup("hi"));
+    	/*
+    	Speedup.query(function(data) {
+    		$scope.speedups = data;
+    	});
+		/**/
+		Speedup.getAll()
+			.success(function(data) {
+				var speedups = data;
+
+
+
+			})
+			.error(function(error) {
+
+			});
+    };
+    $scope.getAllSpeedups();
+
+    
 	
-	$scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-	$scope.series = ['Series A', 'Series B'];
+	$scope.labels = ['0-5', '5-10', '10-15', '15-20', '20-25', '25-30', '30+'];
+	$scope.series = ['Speedup Distribution'];
 
 	$scope.data = [
-		[65, 59, 80, 81, 56, 55, 40],
-		[28, 48, 40, 19, 86, 27, 90]
+		[12, 22, 30, 44, 22, 12, 5]
 	];
 	
   }
