@@ -31,7 +31,7 @@ var SpeedupSchema = new Schema({
 	
 	playerId: {
 		type: String,
-		default: 0
+		default: ''
 	},
 	
 	context: {

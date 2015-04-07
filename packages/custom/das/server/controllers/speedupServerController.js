@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
 
 // create	
 exports.create = function(req,res) {
+	console.log('hi');
 	var speedup = new Speedup(req.body);
 	console.log(req.body);
 	
@@ -22,6 +23,8 @@ exports.create = function(req,res) {
 
 // get all
 exports.all = function(req,res) {
+	console.log('all called');
+
 	Speedup.find().sort('timeStamp').populate('subGoal').exec(function(err, speedups){
 		if (err) {
 			return res.status(500).json({ error: 'Cannot get all metric speedup'});
