@@ -25,6 +25,16 @@ Das.register(function(app, auth, database) {
   });
   
   Das.aggregateAsset('css', 'das.css');
+  
+  Das.aggregateAsset('js', '/angular-chart.js/dist/angular-chart.js',{
+	weight: 4,
+	absolute: true
+  });
+  
+  Das.aggregateAsset('js', '/Chart.js/Chart.js',{
+	weight: 3,
+	absolute: true
+  });
 
   /**
     //Uncomment to use. Requires meanio@0.3.7 or above
