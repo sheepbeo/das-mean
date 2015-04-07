@@ -7,7 +7,7 @@
 */
 
 /* jshint -W098 */
-angular.module('mean.das', ["chart.js"]).controller('DasController', ['$scope', 'Global', 'Speedup',
+angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 'Global', 'Speedup',
   function($scope, Global, Speedup) {
     $scope.global = Global;
     $scope.package = {
@@ -21,17 +21,30 @@ angular.module('mean.das', ["chart.js"]).controller('DasController', ['$scope', 
 	];
 
     $scope.getAllSpeedups = function() {
-    	//console.log(Speedup("hi"));
-    	/*
-    	Speedup.query(function(data) {
-    		$scope.speedups = data;
-    	});
-		/**/
+		Speedup.scope = $scope;
 		Speedup.getAll()
 			.success(function(data) {
 				var speedups = data;
 
-				console.log(speedups);
+				var i = 0;
+
+				for (i=0; i<speedups.length; i++) {
+					var speedup = speedups[i];
+
+					console.log(speedup.timeLeft);
+					var times = speedup.timeLeft.split(':');
+					var totalMinutes = parseInt(times[0]) * 60 + parseInt(times[1]);
+
+					var index = Math.floor(totalMinutes / 5);
+					console.log(times);
+					console.log(index);
+					console.log(parseInt(times[1]));
+					
+					index = Math.min(index, $scope.data[0].length-1);
+					console.log(index);
+
+					$scope.data[0][index] += 1;
+				}
 
 			})
 			.error(function(error) {
