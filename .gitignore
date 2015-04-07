@@ -69,3 +69,5 @@ modules/views/
 # vim Files
 # --------------------
 *.swp
+
+!packages/**/dist/
