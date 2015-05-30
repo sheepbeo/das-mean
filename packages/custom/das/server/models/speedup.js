@@ -33,41 +33,10 @@ var SpeedupSchema = new Schema({
 		type: String,
 		default: ''
 	},
-	
+
 	context: {
-		level: {
-			type: Number,
-			default: 0
-		},
-		resource: {
-			type: Number,
-			default: 0
-		},
-		premium: {
-			type: Number,
-			default: 0
-		},
-		
-		buildings: [
-			{
-				type: {
-					type: String,
-					default: ''
-				},
-				level: {
-					type: Number,
-					default: 0
-				},
-				posX: {
-					type: Number,
-					default: 0
-				},
-				posY: {
-					type: Number,
-					default: 0
-				}
-			}
-		]
+		type: Schema.ObjectId,
+		ref: 'Context'
 	}
 	
 	/**/
