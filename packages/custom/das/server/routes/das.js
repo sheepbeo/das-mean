@@ -3,22 +3,33 @@
 	Node Routes
 */
 
-var serverController = require('../controllers/speedupServerController');
+var speedupController = require('../controllers/speedupServerController');
+var quitController = require('../controllers/quitServerController');
 
 /* jshint -W098 */
 // The Package is past automatically as first parameter
 module.exports = function(Das, app, auth, database) {
 	
 	
-	app.route('/speedup').get(serverController.all);
-	app.route('/speedup').post(serverController.create);
-	app.route('/speedup').delete(serverController.empty);
-	app.route('/speedup/:speedupId').get(serverController.show);
-	app.route('/speedup/:speedupId').delete(serverController.destroy);
-	app.route('/speedup/:speedupId').put(serverController.update);
+	app.route('/speedup').get(speedupController.all);
+	app.route('/speedup').post(speedupController.create);
+	app.route('/speedup').delete(speedupController.empty);
+	app.route('/speedup/:speedupId').get(speedupController.show);
+	app.route('/speedup/:speedupId').delete(speedupController.destroy);
+	app.route('/speedup/:speedupId').put(speedupController.update);
 	
-	app.param('speedupId', serverController.get);
+	app.param('speedupId', speedupController.get);
 	
+
+  app.route('/quit').get(quitController.all);
+  app.route('/quit').post(quitController.create);
+  app.route('/quit').delete(quitController.empty);
+  app.route('/quit/:quitId').get(quitController.show);
+  app.route('/quit/:quitId').delete(quitController.destroy);
+  app.route('/quit/:quitId').put(quitController.update);
+  
+  app.param('quitId', quitController.get);
+
 
   app.get('/das/example/anyone', function(req, res, next) {
     res.send('Anyone can access this');
