@@ -1,0 +1,20 @@
+{
+	"type": "Turret",
+	"timeLeft": "0:40:35",
+	"timeTotal": "0:45:0",
+	"premiumSpent": 100,
+	"playerId": "fasdhfksahsn232",
+	"context": {
+		"level": 5,
+		"resource": 2232,
+		"premium": 112,
+		"buildings": [
+			{
+				"type": "Turret",
+				"level": 3,
+				"posX": 2.3,
+				"posY": 5
+			}
+		]
+	}
+}

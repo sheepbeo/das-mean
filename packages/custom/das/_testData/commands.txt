@@ -1,0 +1,52 @@
+export COSMOS_USER=cuong.le
+
+curl -i -X PUT "http://cosmos.lab.fi-ware.org:14000/webhdfs/v1/user/$COSMOS_USER/input_data?op=MKDIRS&user.name=$COSMOS_USER"
+curl -i -X PUT "http://cosmos.lab.fi-ware.org:14000/webhdfs/v1/user/$COSMOS_USER/input_data/hello_world?op=CREATE&user.name=$COSMOS_USER"
+curl -i -X PUT -T unstructured_data.txt --header "content-type: application/octet-stream" "http://cosmos.lab.fi-ware.org:14000/webhdfs/v1/user/$COSMOS_USER/input_data/unstructured_data.txt?op=CREATE&user.name=$COSMOS_USER&data=true"
+
+
+
+
+curl -X POST "http://cosmos.lab.fi-ware.org:14000/oozie/v0/jobs" --header "Content-Type: application/xml;charset=UTF-8" -d @jobproperties {"id":"hello_world_job.xml"}
+curl -X POST "http://130.206.80.46:11000/oozie/v0/jobs" --header "Content-Type: application/xml;charset=UTF-8" -d @jobproperties {"id":"0000092-140116081225611-oozie-oozi-W"}
+
+curl -X GET "http://130.206.80.46:11000//oozie/v1/admin/status"
+curl -X GET "http://130.206.80.46:11000//oozie/v1/admin/status&user.name=$COSMOS_USER"
+curl -X GET "http://cosmos.lab.fi-ware.org:14000//oozie/v1/admin/status"
+curl -H "Content-Type: application/xml;charset=UTF-8" -X POST -d @oozie.xml "cosmos.lab.fi-ware.org:11000//oozie/v1/jobs?jobtype=mapreduce&user.name=cuong.le"
+curl --header "Content-Type: application/xml;charset=UTF-8" -X POST -d @oozie1.xml "cosmos.lab.fi-ware.org:11000//oozie/v1/jobs"
+curl -X PUT "http://130.206.80.46:11000/oozie/v1/job/0000004-150407080835937-oozie-oozi-W?action=start"
+curl -X GET "http://130.206.80.46:11000/oozie/v1/job/0000004-150407080835937-oozie-oozi-W?show=info" | python -m "json.tool"
+
+
+hadoop jar /usr/lib/hadoop-0.20/hadoop-examples.jar wordcount /user/ COSMOS_USER/input_data/unstructured_data.txt /user/$COSMOS_USER/output_data/
+hadoop fs -getmerge /user/$COSMOS_USER/output_data /home/$COSMOS_USER/count_result.txt
+
+
+curl -i -L "http://cosmos.lab.fi-ware.org:14000/webhdfs/v1/user/$COSMOS_USER/output_data/structured_data.txt?op=OPEN&user.name=$COSMOS_USER"
+
+curl -i -L "http://130.206.80.46:14000/webhdfs/v1/user/$COSMOS_USER/output_data/structured_data.txt?op=OPEN&user.name=$COSMOS_USER"
+
+
+
+
+// web api test
+
+curl -X POST -H "Content-Type: application/json" -d @testSpeedup.json http://localhost:3000/speedup
+curl -X DELETE http://localhost:3000/speedup
+
+curl -X POST -H "Content-Type: application/json" -d @testSpeedup.json  http://130.206.127.66:3000/speedup
+curl -X POST -H "Content-Type: application/json" -d @testSpeedup.json  http://130.206.115.158:3000/speedup
+
+curl -X POST -H "Content-Type: application/json" -d @testQuit.json http://localhost:3000/quit
+
+
+
+The issue seems to have reappear upon the migration from Spain1 to Spain2
+The following command could not get access
+
+$ curl cosmos.lab.fi-ware.org:11000
+curl: (7) Failed to connect to 130.206.80.46 port 11000: Connection timed out
+
+The same command was successful if it was issued from the Cosmos Instance itself.
+Thus I highly suspect that the port is closed or firewall has ip-blocked the instance.

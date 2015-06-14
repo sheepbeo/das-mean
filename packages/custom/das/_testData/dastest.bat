@@ -1,0 +1,1 @@
+curl -X POST -H "Content-Type: application/json" -d @testSpeedup.json http://localhost:3000/speedup
