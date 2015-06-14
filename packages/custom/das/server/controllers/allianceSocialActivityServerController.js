@@ -5,33 +5,21 @@
  */
 var mongoose = require('mongoose'),
 	AllianceSocialActivity = mongoose.model('AllianceSocialActivity'),
-	Context = mongoose.model('Context'),
 	lodash = require('lodash');
 
 // create	
 exports.create = function(req,res) {
 	
 	var data = req.body;
-	var context = new Context(data.context);
 
-	context.save(function(err, savedData) {
-		if (err) {
-			return res.status(500).json({ error: 'Cannot save metric allianceSocialActivity context' });
-		}
-		//console.log(savedData);
-		data.context = savedData._id;
-		//console.log(data);
-
-		var allianceSocialActivity = new AllianceSocialActivity(data);
+	var allianceSocialActivity = new AllianceSocialActivity(data);
 	
-		allianceSocialActivity.save(function(err) {
-			if (err) {
-				console.log(err);
-				return res.status(500).json({ error: 'Cannot save metric allianceSocialActivity'});
-			}
-			return res.json(allianceSocialActivity);
-		});
-
+	allianceSocialActivity.save(function(err) {
+		if (err) {
+			console.log(err);
+			return res.status(500).json({ error: 'Cannot save metric allianceSocialActivity'});
+		}
+		return res.json(allianceSocialActivity);
 	});
 	
 };
@@ -40,11 +28,11 @@ exports.create = function(req,res) {
 exports.all = function(req,res) {
 	console.log('all called');
 
-	AllianceSocialActivity.find().sort('timeStamp').populate('context').exec(function(err, allianceSocialActivitys){
+	AllianceSocialActivity.find().sort('timeStamp').exec(function(err, allianceSocialActivities){
 		if (err) {
 			return res.status(500).json({ error: 'Cannot get all metric allianceSocialActivity'});
 		}
-		return res.json(allianceSocialActivitys);
+		return res.json(allianceSocialActivities);
 	});
 };
 

@@ -40,11 +40,11 @@ exports.create = function(req,res) {
 exports.all = function(req,res) {
 	console.log('all called');
 
-	PlayerSocialActivity.find().sort('timeStamp').populate('context').exec(function(err, playerSocialActivitys){
+	PlayerSocialActivity.find().sort('timeStamp').populate('context').exec(function(err, playerSocialActivities){
 		if (err) {
 			return res.status(500).json({ error: 'Cannot get all metric playerSocialActivity'});
 		}
-		return res.json(playerSocialActivitys);
+		return res.json(playerSocialActivities);
 	});
 };
 

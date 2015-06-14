@@ -21,14 +21,8 @@ var AllianceSocialActivitySchema = new Schema({
 	allianceId: {
 		type: String,
 		default: ''
-	},
-
-	context: {
-		type: Schema.ObjectId,
-		ref: 'Context'
 	}
 	
-	/**/
 });
 
 // Static
