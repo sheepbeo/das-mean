@@ -15,7 +15,7 @@ var PlayerSocialActivitySchema = new Schema({
 
 	activityType: {
 		type: String,
-		default: Date.now
+		default: ''
 	},
 	
 	playerId: {

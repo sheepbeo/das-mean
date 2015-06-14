@@ -15,7 +15,7 @@ var AllianceSocialActivitySchema = new Schema({
 
 	activityType: {
 		type: String,
-		default: Date.now
+		default: ''
 	},
 	
 	allianceId: {
