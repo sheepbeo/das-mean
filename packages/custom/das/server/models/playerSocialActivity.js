@@ -7,14 +7,14 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
   
   
-var QuitSchema = new Schema({
-	dateQuit: {
+var PlayerSocialActivitySchema = new Schema({
+	timeStamp: {
 		type: Date,
 		default: Date.now
 	},
 
-	dateBegin: {
-		type: Date,
+	activityType: {
+		type: String,
 		default: Date.now
 	},
 	
@@ -32,9 +32,9 @@ var QuitSchema = new Schema({
 });
 
 // Static
-QuitSchema.statics.load = function (id, cb) {
+PlayerSocialActivitySchema.statics.load = function (id, cb) {
 	this.findOne({
 	}).populate('user', 'name username').exec(cb);
 };
 
-mongoose.model('Quit', QuitSchema);
+mongoose.model('PlayerSocialActivity', PlayerSocialActivitySchema);

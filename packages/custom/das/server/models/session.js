@@ -7,13 +7,13 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
   
   
-var QuitSchema = new Schema({
-	dateQuit: {
+var SessionSchema = new Schema({
+	begin: {
 		type: Date,
 		default: Date.now
 	},
 
-	dateBegin: {
+	end: {
 		type: Date,
 		default: Date.now
 	},
@@ -32,9 +32,9 @@ var QuitSchema = new Schema({
 });
 
 // Static
-QuitSchema.statics.load = function (id, cb) {
+SessionSchema.statics.load = function (id, cb) {
 	this.findOne({
 	}).populate('user', 'name username').exec(cb);
 };
 
-mongoose.model('Quit', QuitSchema);
+mongoose.model('Session', SessionSchema);
