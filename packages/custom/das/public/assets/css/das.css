@@ -15,3 +15,13 @@
 .navbar-inverse .navbar-nav > li > a {
 	color: #FFFFFF;
 }
+
+.right {
+    float: right;
+    width: 140px;
+}
+
+.left {
+	float: left;
+    width: 140px;
+}

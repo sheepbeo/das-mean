@@ -53,11 +53,11 @@ exports.createEntriesOfType = function(req,res,next,id) {
 			for (var j=0; j<nextPlayerEntryCount; j++) {
 				var context = new Context();
 				var speedup = new Speedup();
+				speedup = JSON.parse(JSON.stringify(speedup)); // hack model
 				
 				var timeTotalSeconds = TimeRange[randomRangeInt(0,TimeRange.length-1)];
 				var timeLeftSeconds = timeTotalSeconds * randomRangeFloat(0,1);
 
-				speedup.context = context._id;
 				speedup.type = "Turret";
 				speedup.premiumSpent = Math.round(Math.sqrt(timeLeftSeconds) / 5) ;
 				speedup.timeLeft = moment.duration(timeLeftSeconds, 'seconds').format("hh:mm:ss", { trim:false });
@@ -68,6 +68,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 				context.resource = randomRangeInt(100,1000);
 				context.premium = speedup.premiumSpent + randomRangeInt(5, 15);
 
+				speedup.context = context;
 
 				resultObjects.push(speedup);
 				speedupController.createOne(speedup, function(result) {});				

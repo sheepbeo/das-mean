@@ -1,28 +1,32 @@
 <div class="" data-ng-controller="DasController">
   <h1>Vulpine Games</h1>
   <!--<h2>Package: {{package.name}}</h2>-->
-  <select ng-model="optionVertical" ng-change="updateGraph()">
-  	<option>count</option>
-  	<option>type</option>
-  	<option>timeTotal</option>
-  	<option>timeLeft</option>
-  	<option>premiumSpent</option>
-  	<option>level</option>
-  	<option>resource</option>
-  	<option>premium</option>
-  </select>
-  <select ng-model="optionHorizontal" ng-change="updateGraph()">
-  	<option>count</option>
-  	<option>type</option>
-  	<option>timeTotal</option>
-  	<option>timeLeft</option>
-  	<option>premiumSpent</option>
-  	<option>level</option>
-  	<option>resource</option>
-  	<option>premium</option>
-  </select>
+  <div>
+	  <select id="optionVer" class="left" ng-model="optionVertical" ng-change="updateGraph()">
+	  	<option>count</option>
+	  	<option>type</option>
+	  	<option>timeTotal</option>
+	  	<option>timeLeft</option>
+	  	<option>premiumSpent</option>
+	  	<option>level</option>
+	  	<option>resource</option>
+	  	<option>premium</option>
+	  </select>
+	  <select id="optionHor" class="right" ng-model="optionHorizontal" ng-change="updateGraph()">
+	  	<option>count</option>
+	  	<option>type</option>
+	  	<option>timeTotal</option>
+	  	<option>timeLeft</option>
+	  	<option>premiumSpent</option>
+	  	<option>level</option>
+	  	<option>resource</option>
+	  	<option>premium</option>
+	  </select>
+  </div>
 
-
+  <br>
+  <br>
+  <br>
 
 
   <canvas id="bar" class="chart chart-bar" data="data" labels="labels"></canvas>
