@@ -11,35 +11,64 @@ var mongoose = require('mongoose'),
 // create	
 exports.create = function(req,res) {
 	console.log('hi');
-	//var speedup = new Speedup(req.body);
-	//console.log(JSON.parse(req.body));
-	//return req.body;
 	console.log(req.body.type);
 
-	var data = req.body;
-	var context = new Context(data.context);
+	// var data = req.body;
+	// var context = new Context(data.context);
 
-	context.save(function(err, savedData) {
-		if (err) {
-			return res.status(500).json({ error: 'Cannot save metric speedup context' });
-		}
-		//console.log(savedData);
-		data.context = savedData._id;
-		//console.log(data);
+	// context.save(function(err, savedData) {
+	// 	if (err) {
+	// 		return res.status(500).json({ error: 'Cannot save metric speedup context' });
+	// 	}
+	// 	//console.log(savedData);
+	// 	data.context = savedData._id;
+	// 	//console.log(data);
 
-		var speedup = new Speedup(data);
+	// 	var speedup = new Speedup(data);
 	
-		speedup.save(function(err) {
-			if (err) {
-				console.log(err);
-				return res.status(500).json({ error: 'Cannot save metric speedup'});
-			}
-			return res.json(speedup);
-		});
+	// 	speedup.save(function(err) {
+	// 		if (err) {
+	// 			console.log(err);
+	// 			return res.status(500).json({ error: 'Cannot save metric speedup'});
+	// 		}
+	// 		return res.json(speedup);
+	// 	});
 
+	// });
+	
+	exports.createOne(req.body, function(result) {
+		if (!result) {
+			return res.status(500).json({ error: 'Cannot save metric speedup'});
+		} else {
+			console.log(result);
+			return res.json(result);
+		}	
 	});
 	
 };
+
+exports.createOne = function(data, callBack) {
+	var context = new Context(data.context);
+
+	context.save(function(err, savedData) {
+		if (err != null) {
+			callBack(false);
+			return false;
+		}
+
+		data.context = savedData._id;
+		var speedup = new Speedup(data);
+	
+		speedup.save(function(err, savedData2) {
+			if (err != null) {
+				callBack(false);
+				return false;
+			}
+			callBack(savedData2);
+		});
+
+	});
+}
 
 // get all
 exports.all = function(req,res) {
