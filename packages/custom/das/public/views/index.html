@@ -1,8 +1,30 @@
 <div class="" data-ng-controller="DasController">
   <h1>Vulpine Games</h1>
   <!--<h2>Package: {{package.name}}</h2>-->
-  <h2>Speedup Distribution</h2>
-  
+  <select ng-model="optionVertical" ng-change="updateGraph()">
+  	<option>count</option>
+  	<option>type</option>
+  	<option>timeTotal</option>
+  	<option>timeLeft</option>
+  	<option>premiumSpent</option>
+  	<option>level</option>
+  	<option>resource</option>
+  	<option>premium</option>
+  </select>
+  <select ng-model="optionHorizontal" ng-change="updateGraph()">
+  	<option>count</option>
+  	<option>type</option>
+  	<option>timeTotal</option>
+  	<option>timeLeft</option>
+  	<option>premiumSpent</option>
+  	<option>level</option>
+  	<option>resource</option>
+  	<option>premium</option>
+  </select>
+
+
+
+
   <canvas id="bar" class="chart chart-bar" data="data" labels="labels"></canvas>
   <!--<canvas id="line" class="chart chart-line" data="data"
     labels="labels" legend="true" series="series"

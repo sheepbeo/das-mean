@@ -1,3 +1,17 @@
 .das-example h1 {
   background-color: purple
 }
+
+.navbar-inverse {
+	background-color: #F24C18;
+	border-color: #F24C18;
+
+}
+
+.navbar-inverse .navbar-brand {
+	color: #FFFFFF;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+	color: #FFFFFF;
+}
