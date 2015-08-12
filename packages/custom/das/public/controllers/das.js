@@ -14,16 +14,39 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
       name: 'das'
     };
 
-    $scope.labels = ['0-5', '5-10', '10-15', '15-20', '20-25', '25-30', '30+'];
-	$scope.series = ['Speedup Distribution'];
-	$scope.data = [
-		[0, 0, 0, 0, 0, 0, 0]
-	];
+    $scope.label1 = [];
+	$scope.label2 = [];
+    $scope.label3 = [];
+    $scope.label4 = [];
+    $scope.label5 = [];
+    $scope.label6 = [];
+    $scope.label7 = [];
+    $scope.label8 = [];
+
+    $scope.data1 = [ [] ];
+    $scope.data2 = [ [] ];
+    $scope.data3 = [ [] ];
+    $scope.data4 = [ [] ];
+    $scope.data5 = [ [] ];
+    $scope.data6 = [ [] ];
+    $scope.data7 = [ [] ];
+    $scope.data8 = [ [] ];
+
+    $scope.series2 = [];
 
 	Chart.defaults.global.colours[0] = "#F27952";
 
 	var allSpeedups = [];
 	var timeMarks = [0, 5, 10, 30, 60, 120, 240, 480, 1440];
+
+
+
+
+    
+
+
+
+/********* private functions **************/
 
 	function getHorizontalValues(type) {
     	var values = [];
@@ -149,27 +172,45 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
 				callBack(false);
 			});
     };
+
+
+
+/************ /end private functions ***************/
     
-
-    $scope.optionVertical = "count";
-    $scope.optionHorizontal = "timeLeft";
-
-    $scope.updateGraph = function() {
-		$scope.labels = getHorizontalValues($scope.optionHorizontal);
-		$scope.data[0] = getVerticalValues($scope.optionHorizontal, $scope.optionVertical);
-    }
-
-    
-
-    
-
-
     // initialization
     $scope.getAllSpeedups(function(result) {
-    	if (result) {
-    		$scope.updateGraph();
-    	}
+        console.log(result);
+
+        if (result) {
+            $scope.label1 = getHorizontalValues("timeLeft");
+            $scope.data1[0] = getVerticalValues("timeLeft", "count");
+
+            $scope.label2 = getHorizontalValues("timeTotal");
+            $scope.data2[0] = getVerticalValues("timeTotal", "count");
+
+            $scope.label3 = getHorizontalValues("premiumSpent");
+            $scope.data3[0] = getVerticalValues("premiumSpent", "count");
+
+            $scope.label4 = getHorizontalValues("premium");
+            $scope.data4[0] = getVerticalValues("premium", "count");
+
+            $scope.label5 = getHorizontalValues("premiumSpent");
+            $scope.data5[0] = getVerticalValues("premiumSpent", "count");
+
+            $scope.label6 = getHorizontalValues("premiumSpent");
+            $scope.data6[0] = getVerticalValues("premiumSpent", "count");
+
+            $scope.label7 = getHorizontalValues("premiumSpent");
+            $scope.data7[0] = getVerticalValues("premiumSpent", "count");
+
+            $scope.label8 = getHorizontalValues("premiumSpent");
+            $scope.data8[0] = getVerticalValues("premiumSpent", "count");
+        }
+
+        
+        console.log(allSpeedups);
     });
+    
   }
 ]);
 

@@ -26,29 +26,47 @@
 
 
 .graph-block-container {
-
+	/* border: 2px solid black; /**/
+	overflow: auto;
+	margin: 35px 0px;
 }
 
 .graph-block-wrapper {
-	
+	/* border: 2px solid black; /**/
+	overflow: auto;
 }
 
 .graph-canvas-container {
-	
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.graph-canvas-header {
+    background-color: #f5f5f5;
+	border-color: #ddd;
+	padding: 10px 15px;
+	font-weight: bold;
+}
+
+.graph-canvas-wrapper {
+	padding: 15px;
 }
 
 .graph-description-container {
-	
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
 
 .description-wrapper {
-
+	padding: 10px 15px;
 }
 
 .small-column {
-	width: 33%;
+	width: 32%;
 }
 
 .big-column {
-	width: 67%;
+	width: 65%;
 }
