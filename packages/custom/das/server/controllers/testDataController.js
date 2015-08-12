@@ -20,10 +20,13 @@ var allianceSocialActivityController = require('./allianceSocialActivityServerCo
 var playerSocialActivityController = require('./playerSocialActivityServerController');
 
 
-var numberOfPlayers = 100;
-var numberOfEntryPerPlayer = 5;
-var randomEntryNumberRange = 1;
-var TimeRange = [ 60, 300, 1200, 3600, 7200, 14400, 28800, 86400 ]
+var numberOfPlayers = 1000;
+var numberOfEntryPerPlayerMin = 1;
+var numberOfEntryPerPlayerMax = 3;
+var TimeRange = [ 60, 300, 1200, 3600, 7200, 14400, 28800, 86400 ];
+var startDate = moment('2015-8-1');
+var endDate = moment('2015-8-12');
+var saleDate = moment('2015-8-8');
 
 // create all
 exports.createEntries = function(req,res) {
@@ -45,8 +48,10 @@ exports.createEntriesOfType = function(req,res,next,id) {
 
 	if (id == "speedup") {
 
+
+
 		for (var i=0; i<numberOfPlayers; i++){
-			var nextPlayerEntryCount = randomRangeInt(numberOfEntryPerPlayer - randomEntryNumberRange, numberOfEntryPerPlayer + randomEntryNumberRange);
+			var nextPlayerEntryCount = randomRangeInt(numberOfEntryPerPlayerMin, numberOfEntryPerPlayerMax);
 			var playerId = createGUID();
 			var level = randomRangeInt(1,10);
 
@@ -57,6 +62,8 @@ exports.createEntriesOfType = function(req,res,next,id) {
 				
 				var timeTotalSeconds = TimeRange[randomRangeInt(0,TimeRange.length-1)];
 				var timeLeftSeconds = timeTotalSeconds * randomRangeFloat(0,1);
+
+				//speedup.timeStamp = new Date();
 
 				speedup.type = "Turret";
 				speedup.premiumSpent = Math.round(Math.sqrt(timeLeftSeconds) / 5) ;
@@ -75,6 +82,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 			}
 
 		}
+
 	}
 
 	req.resultObjects = resultObjects;
