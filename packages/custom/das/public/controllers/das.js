@@ -38,7 +38,7 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
 
 	var allSpeedups = [];
 	var timeMarks = [0, 5, 10, 30, 60, 120, 240, 480, 1440];
-
+    var levelMarks = [1, 4, 7];
 
 
 
@@ -91,6 +91,18 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
 			}
     	}
 
+        if (type == "level") {
+            for (var i=0; i<levelMarks.length; i++) {
+                if (i != levelMarks.length - 1) {
+                    values.push(levelMarks[i] + "-" + levelMarks[i+1]);
+                } else {
+                    values.push(levelMarks[i] + "+");
+                }
+            }
+        }
+
+        console.log(values);
+
     	return values;
     }
 
@@ -142,7 +154,19 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
 					values[speedup.context.premium]++;
 				}
     		}
+
+            if (typeHoz == "level") {
+                for (var i=0; i<allSpeedups.length; i++) {
+                    var speedup = allSpeedups[i];
+
+                    var index = getIndexFromRange(speedup.context.level, levelMarks);
+                    values[index]++;
+                }
+            }
     	}
+
+        console.log("values : ");
+        console.log(values);
 
     	return values;
     }
@@ -194,8 +218,8 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
             $scope.label4 = getHorizontalValues("premium");
             $scope.data4[0] = getVerticalValues("premium", "count");
 
-            $scope.label5 = getHorizontalValues("premiumSpent");
-            $scope.data5[0] = getVerticalValues("premiumSpent", "count");
+            $scope.label5 = getHorizontalValues("level");
+            $scope.data5 = getVerticalValues("level", "count");
 
             $scope.label6 = getHorizontalValues("premiumSpent");
             $scope.data6[0] = getVerticalValues("premiumSpent", "count");
