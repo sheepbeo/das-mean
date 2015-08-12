@@ -18,10 +18,37 @@
 
 .right {
     float: right;
-    width: 140px;
 }
 
 .left {
 	float: left;
-    width: 140px;
+}
+
+
+.graph-block-container {
+
+}
+
+.graph-block-wrapper {
+	
+}
+
+.graph-canvas-container {
+	
+}
+
+.graph-description-container {
+	
+}
+
+.description-wrapper {
+
+}
+
+.small-column {
+	width: 33%;
+}
+
+.big-column {
+	width: 67%;
 }

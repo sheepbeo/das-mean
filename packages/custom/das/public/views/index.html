@@ -1,37 +1,22 @@
 <div class="" data-ng-controller="DasController">
-  <h1>Vulpine Games</h1>
-  <!--<h2>Package: {{package.name}}</h2>-->
-  <div>
-	  <select id="optionVer" class="left" ng-model="optionVertical" ng-change="updateGraph()">
-	  	<option>count</option>
-	  	<option>type</option>
-	  	<option>timeTotal</option>
-	  	<option>timeLeft</option>
-	  	<option>premiumSpent</option>
-	  	<option>level</option>
-	  	<option>resource</option>
-	  	<option>premium</option>
-	  </select>
-	  <select id="optionHor" class="right" ng-model="optionHorizontal" ng-change="updateGraph()">
-	  	<option>count</option>
-	  	<option>type</option>
-	  	<option>timeTotal</option>
-	  	<option>timeLeft</option>
-	  	<option>premiumSpent</option>
-	  	<option>level</option>
-	  	<option>resource</option>
-	  	<option>premium</option>
-	  </select>
-  </div>
+	<h1>Vulpine Games</h1>
 
-  <br>
-  <br>
-  <br>
+	<div class="graph-block-container" >
+		<div class="graph-block-wrapper">
+			<div class="graph-canvas-container big-column left">
+				<canvas id="bar" class="chart chart-bar" data="data" labels="labels"></canvas>
+			</div>
 
-
-  <canvas id="bar" class="chart chart-bar" data="data" labels="labels"></canvas>
-  <!--<canvas id="line" class="chart chart-line" data="data"
-    labels="labels" legend="true" series="series"
-    click="onClick">
-  </canvas> -->
+			<div class="graph-description-container small-column right">
+				<div class="description-wrapper">
+					hi
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!--<canvas id="line" class="chart chart-line" data="data"
+	labels="labels" legend="true" series="series"
+	click="onClick">
+	</canvas> -->
 </div>
