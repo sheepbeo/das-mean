@@ -112,9 +112,20 @@ exports.createEntriesOfType = function(req,res,next,id) {
 
 	} else if (id == "rawAllianceSuggestionData") {
 
+		var numberOfPlayer = 100;
+		var numberOfAlliance = 100;
+
+		if (req.query.playerCount != null) {
+			numberOfPlayer = req.query.playerCount;
+		}
+
+		if (req.query.allianceCount != null) {
+			numberOfAlliance = req.query.allianceCount;
+		}
+
 		// regenerate players:
-		players = generatePlayers(100);
-		alliances = generateAlliances(100);
+		players = generatePlayers(numberOfPlayer);
+		alliances = generateAlliances(numberOfAlliance);
 
 		iterate(players, function(player) {
 			var alliance = randomRangeInt(0, alliances.length);
@@ -123,13 +134,13 @@ exports.createEntriesOfType = function(req,res,next,id) {
 			var startTime = moment(timeStartBegin);
 			startTime.add(moment.duration(randomRangeInt(0, timeStartRange)*100));
 
-			var allianceJoinEvent = {
+			resultObjects.push({
 				Type : "AllianceMemberEvent",
+				Action : "Join",
 				AllianceId : alliance.AllianceId,
 				PlayerId : player.PlayerId,
 				TimeStamp : startTime.format(timeFormat)
-			}
-			resultObjects.push(allianceJoinEvent);
+			});
 
 			var counter = 0;
 			var counterLimit = 10000;
@@ -231,6 +242,14 @@ exports.createEntriesOfType = function(req,res,next,id) {
 						TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 					});
 
+					resultObjects.push({
+						Type : "AllianceMemberEvent",
+						Action : "Leave",
+						AllianceId : alliance.AllianceId,
+						PlayerId : player.PlayerId,
+						TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+					});
+
 					break;
 				}
 
@@ -254,6 +273,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 	req.resultObjects = resultObjects;
 	next();
 };
+
 
 exports.clearEntries = function(req,res) {
 	console.log("inside clear entries");
