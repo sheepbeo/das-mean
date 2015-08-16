@@ -28,17 +28,44 @@ var TimeRange = [ 60, 300, 1200, 3600, 7200, 14400, 28800, 86400 ];
 //var endDate = moment('2015-8-12');
 //var saleDate = moment('2015-8-8');
 
+var players = JSON.parse('[ { "PlayerId" : "17f94cbd-489d-4d5e-bcdd-aa0e0fa1383d", "Name" : "Dood1", "Level" : 1 }, { "PlayerId" : "184d1507-d704-4897-8f7a-597a56b81a18", "Name" : "Dood2", "Level" : 2 } ]');
+var alliances = JSON.parse('[ { "PlayerId" : "17f94cbd-489d-4d5e-bcdd-aa0e0fa1383d", "Name" : "Dood1", "Level" : 1 }, { "PlayerId" : "184d1507-d704-4897-8f7a-597a56b81a18", "Name" : "Dood2", "Level" : 2 } ]');
+
+var timeStep = 60;
+var timeFormat = "DD/MM/YYYY HH:mm:ss";
+var timeStartBegin = moment("01/01/2015 15:00:00", timeFormat);
+var timeStartEnd = moment("01/08/2015 15:00:00", timeFormat);
+var timeStartRange = (moment.duration(timeStartEnd.diff(timeStartBegin))).asSeconds();
+
+var minNumberOfSession = 0;
+var maxNumberOfSession = 0;
+var minSessionLength = 0;
+var maxSessionLength = 0;
+
+var chanceAttack = 0;
+var chanceEventParticipation = 0;
+var chanceChatMessage = 0;
+var chanceRaidParticipation = 0;
+var chanceAllianceDonation = 0;
+var chanceAllianceChatMessage = 0;
+
+var chanceQuit = 0;
+var chanceLeave = 0;
+
+
 // create all
 exports.createEntries = function(req,res) {
 	console.log("inside create Entries");
 
 	var result = '';
 	for (var i=0; i<req.resultObjects.length; i++) {
-		result += JSON.stringify(req.resultObjects[i]) + '\n'; 
+		result += JSON.stringify(req.resultObjects[i]) + '</br>'; 
 	}
 
 	return res.send(result);
 };
+
+
 
 // create of type
 exports.createEntriesOfType = function(req,res,next,id) {
@@ -47,8 +74,6 @@ exports.createEntriesOfType = function(req,res,next,id) {
 	var resultObjects = [];
 
 	if (id == "speedup") {
-
-
 
 		for (var i=0; i<numberOfPlayers; i++){
 			var nextPlayerEntryCount = randomRangeInt(numberOfEntryPerPlayerMin, numberOfEntryPerPlayerMax);
@@ -83,6 +108,22 @@ exports.createEntriesOfType = function(req,res,next,id) {
 
 		}
 
+	} else if (id == "rawAllianceSuggestionData") {
+		iterate(players, function(player) {
+			var alliance = randomRangeInt(0, alliances.length);
+			var isEnded = false;
+
+			var startTime = timeStartBegin.add(moment.duration(randomRangeInt(0, timeStartRange)*100));
+
+			var allianceJoinEvent = {
+				Type : "AllianceMemberEvent",
+				PlayerId : player.PlayerId,
+				TimeStamp : startTime.format(timeFormat)
+			}
+
+			resultObjects.push(allianceJoinEvent);
+
+		});
 	}
 
 	req.resultObjects = resultObjects;
@@ -119,4 +160,14 @@ function createGUID() {
 
 function S4() {
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+}
+
+function RollChance(chance) {
+	return (Math.random() < chance);
+}
+
+function iterate(collection, job) {
+	for (var i=0; i<collection.length; i++) {
+		job(collection[i]);
+	}
 }
