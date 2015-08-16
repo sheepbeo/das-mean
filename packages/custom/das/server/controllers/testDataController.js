@@ -61,7 +61,7 @@ exports.createEntries = function(req,res) {
 
 	var result = '';
 	for (var i=0; i<req.resultObjects.length; i++) {
-		result += JSON.stringify(req.resultObjects[i]) + '</br>'; 
+		result += JSON.stringify(req.resultObjects[i]) + ',' + '\n';
 	}
 
 	return res.send(result);
