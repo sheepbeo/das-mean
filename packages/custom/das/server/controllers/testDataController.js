@@ -29,7 +29,7 @@ var TimeRange = [ 60, 300, 1200, 3600, 7200, 14400, 28800, 86400 ];
 //var saleDate = moment('2015-8-8');
 
 var players = JSON.parse('[ { "PlayerId" : "17f94cbd-489d-4d5e-bcdd-aa0e0fa1383d", "Name" : "Dood1", "Level" : 1 }, { "PlayerId" : "184d1507-d704-4897-8f7a-597a56b81a18", "Name" : "Dood2", "Level" : 2 } ]');
-var alliances = JSON.parse('[ { "PlayerId" : "17f94cbd-489d-4d5e-bcdd-aa0e0fa1383d", "Name" : "Dood1", "Level" : 1 }, { "PlayerId" : "184d1507-d704-4897-8f7a-597a56b81a18", "Name" : "Dood2", "Level" : 2 } ]');
+var alliances = JSON.parse('[ { "AllianceId" : "17f94cbd-489d-4d5e-bcdd-aa0e0fa1383d", "Name" : "LoL1", "Level" : 1 }, { "AllianceId" : "184d1507-d704-4897-8f7a-597a56b81a18", "Name" : "LoL2", "Level" : 2 } ]');
 
 var timeStep = 60;
 var timeFormat = "DD/MM/YYYY HH:mm:ss";
@@ -42,15 +42,17 @@ var maxNumberOfSession = 0;
 var minSessionLength = 0;
 var maxSessionLength = 0;
 
-var chanceAttack = 0;
-var chanceEventParticipation = 0;
-var chanceChatMessage = 0;
-var chanceRaidParticipation = 0;
-var chanceAllianceDonation = 0;
-var chanceAllianceChatMessage = 0;
+var chanceStartSession = 0.1;
+var chanceStopSession = 0.1;
+var chanceAttack = 0.1;
+var chanceEventParticipation = 0.1;
+var chanceChatMessage = 0.1;
+var chanceRaidParticipation = 0.1;
+var chanceAllianceDonation = 0.1;
+var chanceAllianceChatMessage = 0.1;
 
-var chanceQuit = 0;
-var chanceLeave = 0;
+var chanceQuit = 0.002;
+var chanceLeave = 0.002;
 
 
 // create all
@@ -109,19 +111,142 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		}
 
 	} else if (id == "rawAllianceSuggestionData") {
+
+		// regenerate players:
+		players = generatePlayers(100);
+		alliances = generateAlliances(100);
+
 		iterate(players, function(player) {
 			var alliance = randomRangeInt(0, alliances.length);
 			var isEnded = false;
 
-			var startTime = timeStartBegin.add(moment.duration(randomRangeInt(0, timeStartRange)*100));
+			var startTime = moment(timeStartBegin);
+			startTime.add(moment.duration(randomRangeInt(0, timeStartRange)*100));
 
 			var allianceJoinEvent = {
 				Type : "AllianceMemberEvent",
+				AllianceId : alliance.AllianceId,
 				PlayerId : player.PlayerId,
 				TimeStamp : startTime.format(timeFormat)
 			}
-
 			resultObjects.push(allianceJoinEvent);
+
+			var counter = 0;
+			var counterLimit = 10000;
+			var sessionStarted = false;
+			var currentSessionLength = 0;
+			while (counter <= counterLimit) {
+				if (sessionStarted) {
+					// session stopped:
+					if (RollChance(chanceStopSession)) {
+						resultObjects.push({
+							Type : "PlayerSession",
+							PlayerId : player.PlayerId,
+							TimeStamp : moment(startTime).add(counter, 's').format(timeFormat),
+							LengthInSeconds : currentSessionLength
+						});
+
+						sessionStarted = false;
+						currentSessionLength = 0;
+					} else {
+						if (RollChance(chanceAttack)) {
+							resultObjects.push({
+								Type : "Attack",
+								PlayerId : player.PlayerId,
+								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+							});
+						}
+
+						if (RollChance(chanceEventParticipation)) {
+							resultObjects.push({
+								Type : "EventParticipation",
+								PlayerId : player.PlayerId,
+								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+							});
+						}
+
+						if (RollChance(chanceChatMessage)) {
+							resultObjects.push({
+								Type : "ChatMessage",
+								PlayerId : player.PlayerId,
+								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+							});
+						}
+
+						if (RollChance(chanceRaidParticipation)) {
+							resultObjects.push({
+								Type : "RaidParticipation",
+								PlayerId : player.PlayerId,
+								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+							});
+						}
+
+						if (RollChance(chanceAllianceDonation)) {
+							resultObjects.push({
+								Type : "AllianceDonation",
+								PlayerId : player.PlayerId,
+								Amount : randomRangeInt(10, 20),
+								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+							});
+						}
+
+						if (RollChance(chanceAllianceChatMessage)) {
+							resultObjects.push({
+								Type : "Attack",
+								PlayerId : player.PlayerId,
+								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+							});
+						}
+
+					}
+
+					currentSessionLength += timeStep;
+				}
+
+				// session started:
+				if (RollChance(chanceStartSession)) {
+					sessionStarted = true;
+				}
+
+				// player quit, +30 days to counter
+				if (!sessionStarted && RollChance(chanceQuit)) {
+					resultObjects.push({
+						Type : "EvaluationEvent",
+						AllianceId : alliance.AllianceId,
+						PlayerId : player.PlayerId,
+						Action : "Quit",
+						TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+					});
+
+					break;
+				}
+
+				// player leave alliance
+				if (sessionStarted && RollChance(chanceLeave)) {
+					resultObjects.push({
+						Type : "EvaluationEvent",
+						AllianceId : alliance.AllianceId,
+						PlayerId : player.PlayerId,
+						Action : "Quit",
+						TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+					});
+
+					break;
+				}
+
+				counter += timeStep;
+			}
+
+			// player enjoyed alliance for long time
+			if (counter >= counterLimit) {				
+				resultObjects.push({
+					Type : "EvaluationEvent",
+					AllianceId : alliance.AllianceId,
+					PlayerId : player.PlayerId,
+					Action : "LongEnough",
+					TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
+				});
+			}
 
 		});
 	}
@@ -170,4 +295,32 @@ function iterate(collection, job) {
 	for (var i=0; i<collection.length; i++) {
 		job(collection[i]);
 	}
+}
+
+function generatePlayers(amount) {
+	var players = [];
+
+	for (var i=0; i<amount; i++) {
+		players.push({
+			PlayerId : createGUID(),
+			Level : randomRangeInt(1,10),
+			Name : "djfklasjfdl"
+		});
+	}
+
+	return players;
+}
+
+function generateAlliances(amount) {
+	var alliances = [];
+
+	for (var i=0; i<amount; i++) {
+		alliances.push({
+			AllianceId : createGUID(),
+			Level : randomRangeInt(1,10),
+			Name : "djfklasjfdl"
+		});
+	}
+
+	return alliances;
 }
