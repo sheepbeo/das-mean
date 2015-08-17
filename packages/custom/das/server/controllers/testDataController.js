@@ -10,8 +10,8 @@ var mongoose = require('mongoose'),
 	moment = require('moment');
 
 require("moment-duration-format");
-
 moment().format();
+var seedrandom = require('seedrandom');
 
 var speedupController = require('./speedupServerController');
 var quitController = require('./quitServerController');
@@ -60,9 +60,18 @@ exports.createEntries = function(req,res) {
 	console.log("inside create Entries");
 
 	var result = '';
-	for (var i=0; i<req.resultObjects.length; i++) {
-		result += JSON.stringify(req.resultObjects[i]) + ',' + '\n';
+	if (req.useJsonFormat) {
+		for (var i=0; i<req.resultObjects.length; i++) {
+			result += JSON.stringify(req.resultObjects[i]) + ',' + '\n';
+		}
+	} else {
+		if (req.entrySeperator != null) {
+			for (var i=0; i<req.resultObjects.length; i++) {
+				result += req.resultObjects[i] + req.entrySeperator;
+			}
+		}
 	}
+	
 
 	return res.send(result);
 };
@@ -73,7 +82,28 @@ exports.createEntries = function(req,res) {
 exports.createEntriesOfType = function(req,res,next,id) {
 	console.log("inside create Entries");
 
+	var randomSeed = 'hello';
+	if (req.query.randomSeed != null) {
+		randomSeed = req.query.randomSeed;
+	}
+
+	seedrandom(randomSeed, { global: true });
 	var resultObjects = [];
+
+	var numberOfPlayer = 100;
+	var numberOfAlliance = 100;
+
+	if (req.query.playerCount != null) {
+		numberOfPlayer = req.query.playerCount;
+	}
+
+	if (req.query.allianceCount != null) {
+		numberOfAlliance = req.query.allianceCount;
+	}
+
+	// regenerate players:
+	players = generatePlayers(numberOfPlayer);
+	alliances = generateAlliances(numberOfAlliance);
 
 	if (id == "speedup") {
 
@@ -110,22 +140,9 @@ exports.createEntriesOfType = function(req,res,next,id) {
 
 		}
 
+		req.useJsonFormat = true;
+
 	} else if (id == "rawAllianceSuggestionData") {
-
-		var numberOfPlayer = 100;
-		var numberOfAlliance = 100;
-
-		if (req.query.playerCount != null) {
-			numberOfPlayer = req.query.playerCount;
-		}
-
-		if (req.query.allianceCount != null) {
-			numberOfAlliance = req.query.allianceCount;
-		}
-
-		// regenerate players:
-		players = generatePlayers(numberOfPlayer);
-		alliances = generateAlliances(numberOfAlliance);
 
 		iterate(players, function(player) {
 			var alliance = randomRangeInt(0, alliances.length);
@@ -268,6 +285,18 @@ exports.createEntriesOfType = function(req,res,next,id) {
 			}
 
 		});
+
+		req.useJsonFormat = true;
+
+	} else if (id == "rawPlayerData") {
+
+		iterate(players, function(player) {
+			resultObjects.push(player.PlayerId + ' ' + player.Level + ' ' + player.Name);
+		});
+
+		req.entrySeperator = '\n';
+		req.useJsonFormat = false;
+
 	}
 
 	req.resultObjects = resultObjects;
@@ -324,7 +353,7 @@ function generatePlayers(amount) {
 		players.push({
 			PlayerId : createGUID(),
 			Level : randomRangeInt(1,10),
-			Name : "djfklasjfdl"
+			Name : "Player_" + i
 		});
 	}
 
@@ -338,7 +367,7 @@ function generateAlliances(amount) {
 		alliances.push({
 			AllianceId : createGUID(),
 			Level : randomRangeInt(1,10),
-			Name : "djfklasjfdl"
+			Name : "Alliance_" + i
 		});
 	}
 
