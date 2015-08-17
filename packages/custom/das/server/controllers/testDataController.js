@@ -61,14 +61,18 @@ exports.createEntries = function(req,res) {
 
 	var result = '';
 	if (req.useJsonFormat) {
-		for (var i=0; i<req.resultObjects.length; i++) {
+		for (var i=0; i<req.resultObjects.length - 1; i++) {
 			result += JSON.stringify(req.resultObjects[i]) + ',' + '\n';
 		}
+
+		result += JSON.stringify(req.resultObjects[req.resultObjects.length - 1]);
 	} else {
 		if (req.entrySeperator != null) {
-			for (var i=0; i<req.resultObjects.length; i++) {
+			for (var i=0; i<req.resultObjects.length - 1; i++) {
 				result += req.resultObjects[i] + req.entrySeperator;
 			}
+
+			result += req.resultObjects[req.resultObjects.length - 1];
 		}
 	}
 	
@@ -297,6 +301,24 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		req.entrySeperator = '\n';
 		req.useJsonFormat = false;
 
+	} else if (id == "crunchedSpeedupAverage") {
+		resultObjects.push([
+			0.9, 0.5, 0.2, 0.11, 0.04
+		]);
+
+		req.useJsonFormat = true;
+	} else if (id == "crunchedSpeedupTotal") {
+		resultObjects.push([
+			0.9, 0.5, 0.2, 0.11, 0.04
+		]);
+
+		req.useJsonFormat = true;
+	} else if (id == "crunchedChurnReason") {
+		resultObjects.push([
+			0.43, 0.22, 0.12, 0.09, 0.12
+		]);
+
+		req.useJsonFormat = true;
 	}
 
 	req.resultObjects = resultObjects;

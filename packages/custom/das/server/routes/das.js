@@ -45,6 +45,7 @@ module.exports = function(Das, app, auth, database) {
 
 
   app.route('/createTestData/:typeId').get(testDataController.createEntries);
+  app.route('/TestData/:typeId').get(testDataController.createEntries);
   app.param('typeId', testDataController.createEntriesOfType);
   app.route('/clearTestData').get(testDataController.clearEntries);
 

@@ -7,8 +7,8 @@
 */
 
 /* jshint -W098 */
-angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 'Global', 'Speedup',
-  function($scope, Global, Speedup) {
+angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 'Global', 'Speedup', 'TestData'
+  function($scope, Global, Speedup, TestData) {
     $scope.global = Global;
     $scope.package = {
       name: 'das'
