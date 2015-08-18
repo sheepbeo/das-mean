@@ -149,7 +149,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 	} else if (id == "rawAllianceSuggestionData") {
 
 		iterate(players, function(player) {
-			var alliance = randomRangeInt(0, alliances.length);
+			var alliance = alliances[randomRangeInt(0, alliances.length-1)];
 			var isEnded = false;
 
 			var startTime = moment(timeStartBegin);
