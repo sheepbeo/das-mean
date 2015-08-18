@@ -268,11 +268,57 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
         console.log(data);
 
         if (result) {
-            $scope.label1 = [];
+            $scope.label1 = ['0-5m', '5-10m', '10-15m' , '15-20m', '20-25m', '25-30m'];
             $scope.data1[0] = data;
         }
     });
+
+    $scope.getTestData('crunchedSpeedupTotal', function(result, data) {
+        console.log(result);
+        console.log(data);
+
+        if (result) {
+            $scope.label2 = ['1 Aug', '2 Aug', '3 Aug' , '4 Aug', '5 Aug', '6 Aug', '7 Aug', '8 Aug', '9 Aug', '10 Aug', '11 Aug', '12 Aug', '13 Aug', '14 Aug'];
+            $scope.data2[0] = data;
+        }
+    });
+
+    $scope.getTestData('crunchedChurnReason', function(result, data) {
+        console.log(result);
+        console.log(data);
+
+        if (result) {
+            $scope.label3 = ['Failed tutorial', 'hi', 'hi' , 'hi', 'hi', 'Undefined'];
+            $scope.data3 = data;
+        }
+    });
     
+
+    $scope.getTestData('allianceSuggestionMatrix', function(result, data) {
+        console.log(result);
+        console.log(data);
+
+        if (result) {
+            //$scope.data4 = data;
+            var displayData = data;
+
+            if (data != null && data[0] != null) {
+
+            }
+
+            var labels = ['low-low', 'low-med', 'low-high', 'med-low', 'med-med', 'med-high', 'high-low', 'high-med', 'high-high'];
+            for (var i=0; i<labels.length; i++) {
+                if (displayData[i] != null) {
+                    displayData[i].unshift(labels[i]);
+                }
+            }
+
+            labels.unshift('');
+            displayData.unshift(labels);
+
+            data4 = labels;
+        }
+    });
   }
 ]);
 
