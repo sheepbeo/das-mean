@@ -7,7 +7,7 @@
 */
 
 /* jshint -W098 */
-angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 'Global', 'Speedup', 'TestData'
+angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 'Global', 'Speedup', 'TestData',
   function($scope, Global, Speedup, TestData) {
     $scope.global = Global;
     $scope.package = {
@@ -171,6 +171,21 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
     	return values;
     }
 
+    function getTestData(type) {
+        switch (type) {
+            case "" :
+                break;
+            case "" :
+
+                break;
+            case "" :
+
+                break;
+            default:
+                break;
+        }
+    }
+
     function getIndexFromRange(number, rangeArray) {
     	if (rangeArray.length > 0) {
     		for (var i=0; i<rangeArray.length-2; i++) {
@@ -198,9 +213,21 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
     };
 
 
+    $scope.getTestData = function(type, callBack) {
+        TestData.scope = $scope;
+        TestData.getCrunchedData(type)
+            .success(function(data) {
+                callBack(true, data);
+            })
+            .error(function(error) {
+                callBack(false, data);
+            });
+    };
+
 
 /************ /end private functions ***************/
     
+    /*
     // initialization
     $scope.getAllSpeedups(function(result) {
         console.log(result);
@@ -233,6 +260,17 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
 
         
         console.log(allSpeedups);
+    });
+    /**/
+
+    $scope.getTestData('crunchedSpeedupAverage', function(result, data) {
+        console.log(result);
+        console.log(data);
+
+        if (result) {
+            $scope.label1 = [];
+            $scope.data1[0] = data;
+        }
     });
     
   }

@@ -259,7 +259,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 						Type : "EvaluationEvent",
 						AllianceId : alliance.AllianceId,
 						PlayerId : player.PlayerId,
-						Action : "Quit",
+						Action : "Leave",
 						TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 					});
 
