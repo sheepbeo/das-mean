@@ -63,8 +63,16 @@
 				<div class="graph-canvas-header">Level Distribution</div>
 				<div class="graph-canvas-wrapper">
 					<table>
+						<tr>
+							<td ng-repeat="z in label4 track by $index">
+								<p>{{ z }}</p>
+							</td>
+						</tr>
 						<tr ng-repeat="x in data4 track by $index">
-							<td ng-repeat="y in x track by $index">
+							<td>
+								<p>{{ x.label }}</p>
+							</td>
+							<td ng-repeat="y in x.data track by $index">
 								<p>{{ y }}</p>
 							</td>
 						</tr>
