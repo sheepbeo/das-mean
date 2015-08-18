@@ -316,7 +316,8 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
             labels.unshift('');
             displayData.unshift(labels);
 
-            data4 = labels;
+            console.log(displayData);
+            $scope.data4 = displayData;
         }
     });
   }
