@@ -174,6 +174,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 						resultObjects.push({
 							Type : "PlayerSession",
 							PlayerId : player.PlayerId,
+							AllianceId : alliance.AllianceId,
 							TimeStamp : moment(startTime).add(counter, 's').format(timeFormat),
 							LengthInSeconds : currentSessionLength
 						});
@@ -185,6 +186,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 							resultObjects.push({
 								Type : "Attack",
 								PlayerId : player.PlayerId,
+								AllianceId : alliance.AllianceId,
 								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 							});
 						}
@@ -193,6 +195,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 							resultObjects.push({
 								Type : "EventParticipation",
 								PlayerId : player.PlayerId,
+								AllianceId : alliance.AllianceId,
 								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 							});
 						}
@@ -201,6 +204,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 							resultObjects.push({
 								Type : "ChatMessage",
 								PlayerId : player.PlayerId,
+								AllianceId : alliance.AllianceId,
 								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 							});
 						}
@@ -209,6 +213,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 							resultObjects.push({
 								Type : "RaidParticipation",
 								PlayerId : player.PlayerId,
+								AllianceId : alliance.AllianceId,
 								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 							});
 						}
@@ -217,6 +222,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 							resultObjects.push({
 								Type : "AllianceDonation",
 								PlayerId : player.PlayerId,
+								AllianceId : alliance.AllianceId,
 								Amount : randomRangeInt(10, 20),
 								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 							});
@@ -226,6 +232,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 							resultObjects.push({
 								Type : "Attack",
 								PlayerId : player.PlayerId,
+								AllianceId : alliance.AllianceId,
 								TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 							});
 						}
@@ -247,6 +254,9 @@ exports.createEntriesOfType = function(req,res,next,id) {
 						AllianceId : alliance.AllianceId,
 						PlayerId : player.PlayerId,
 						Action : "Quit",
+						PlayerLevel : player.Level,
+						AllianceLevel : alliance.Level,
+						JoinTime : moment(startTime).format(timeFormat),
 						TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 					});
 
@@ -260,6 +270,9 @@ exports.createEntriesOfType = function(req,res,next,id) {
 						AllianceId : alliance.AllianceId,
 						PlayerId : player.PlayerId,
 						Action : "Leave",
+						PlayerLevel : player.Level,
+						AllianceLevel : alliance.Level,
+						JoinTime : moment(startTime).format(timeFormat),
 						TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 					});
 
@@ -284,6 +297,9 @@ exports.createEntriesOfType = function(req,res,next,id) {
 					AllianceId : alliance.AllianceId,
 					PlayerId : player.PlayerId,
 					Action : "LongEnough",
+					PlayerLevel : player.Level,
+					AllianceLevel : alliance.Level,
+					JoinTime : moment(startTime).format(timeFormat),
 					TimeStamp : moment(startTime).add(counter, 's').format(timeFormat)
 				});
 			}
@@ -315,8 +331,21 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		req.useJsonFormat = true;
 	} else if (id == "crunchedChurnReason") {
 		resultObjects.push([
-			0.43, 0.22, 0.12, 0.09, 0.12
+			100, 100, 100, 100, 100, 100
 		]);
+
+		req.useJsonFormat = true;
+	} else if (id == "allianceSuggestionMatrix") {
+		var data = [];
+		for (var i=0; i<9; i++) {
+			var datum = [];
+			for (var j=0; j<9; j++) {;
+				datum.push(1);
+			};
+			data.push(datum);
+		}
+
+		resultObjects.push(data);
 
 		req.useJsonFormat = true;
 	}
