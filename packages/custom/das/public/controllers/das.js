@@ -291,6 +291,7 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
     $scope.getTestData('allianceSuggestionMatrix', function(result, data) {
 
         if (result) {
+            console.log(data);
             var displayData = [];
 
             var labels = ['low-low', 'low-med', 'low-high', 'med-low', 'med-med', 'med-high', 'high-low', 'high-med', 'high-high'];
@@ -309,6 +310,19 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
 
             $scope.label4 = labels;
             $scope.data4 = displayData; 
+            /**/
+        }
+    });
+
+    $scope.getTestData('allianceSuggestionList', function(result, data) {
+
+        if (result) {
+            var displayData = data;
+
+            var labels = ['Alliance Name', 'Alliance Level', 'Alliance Socialness'];
+
+            $scope.label5 = labels;
+            $scope.data5 = displayData;
             /**/
         }
     });

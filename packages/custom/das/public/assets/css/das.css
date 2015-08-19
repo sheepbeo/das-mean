@@ -75,3 +75,18 @@
 	background-color: #F24C18;
 	color: #FFFFFF;
 }
+
+.table-container td {
+	margin : auto;
+	border: solid 3px #F24C18;
+	padding: 4px;
+	text-align: center;
+}
+
+.table-container p {
+	margin: auto;
+}
+
+.header {
+	font-weight: bold;
+}

@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
 require("moment-duration-format");
 moment().format();
 var seedrandom = require('seedrandom');
+var request = require('request');
 
 var speedupController = require('./speedupServerController');
 var quitController = require('./quitServerController');
@@ -75,7 +76,6 @@ exports.createEntries = function(req,res) {
 			result += req.resultObjects[req.resultObjects.length - 1];
 		}
 	}
-	
 
 	return res.send(result);
 };
@@ -146,6 +146,8 @@ exports.createEntriesOfType = function(req,res,next,id) {
 
 		req.useJsonFormat = true;
 
+		req.resultObjects = resultObjects;
+		next();
 	} else if (id == "rawAllianceSuggestionData") {
 
 		iterate(players, function(player) {
@@ -308,6 +310,8 @@ exports.createEntriesOfType = function(req,res,next,id) {
 
 		req.useJsonFormat = true;
 
+		req.resultObjects = resultObjects;
+		next();
 	} else if (id == "rawPlayerData") {
 
 		iterate(players, function(player) {
@@ -317,25 +321,90 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		req.entrySeperator = '\n';
 		req.useJsonFormat = false;
 
+		req.resultObjects = resultObjects;
+		next();
 	} else if (id == "crunchedSpeedupAverage") {
 		resultObjects.push([
 			0.9, 0.5, 0.2, 0.11, 0.04
 		]);
 
 		req.useJsonFormat = true;
+
+		req.resultObjects = resultObjects;
+		next();
 	} else if (id == "crunchedSpeedupTotal") {
 		resultObjects.push([
 			0.9, 0.5, 0.2, 0.11, 0.04
 		]);
 
 		req.useJsonFormat = true;
+
+		req.resultObjects = resultObjects;
+		next();
+
 	} else if (id == "crunchedChurnReason") {
 		resultObjects.push([
 			100, 100, 100, 100, 100, 100
 		]);
 
 		req.useJsonFormat = true;
+
+		req.resultObjects = resultObjects;
+		next();
+
 	} else if (id == "allianceSuggestionMatrix") {
+
+
+		var httpOptions = {
+			url: 'http://cosmos.lab.fi-ware.org:14000/webhdfs/v1/user/cuong.le/out?op=open&user.name=cuong.le',
+			headers: {
+				'X-Auth-Token' : 'lCKVBFpuz3GffLV9YTwh8kfSllOiCr'
+			}
+		};
+
+		request(httpOptions, function callback(error, response, body) {
+			if (!error) {
+				
+				var entries = body.trim().split('\n');
+
+				var measuredLevels = ['Low', 'Mid', 'High'];
+
+				var data = [];
+
+				for(var i=0; i<9; i++) {
+					var datum = [];
+					for (var j=0; j<9; j++) {
+						datum.push(0);
+					}
+					data.push(datum);
+				}
+
+				for(var i=0; i<entries.length; i++) {
+					var row = entries[i].split(/ |\t/);
+
+					var pLevel = getContainedIndexOf(row[0], measuredLevels);
+					var pSocial = getContainedIndexOf(row[1], measuredLevels);
+					var aLevel = getContainedIndexOf(row[2], measuredLevels);
+					var aSocial = getContainedIndexOf(row[3], measuredLevels);
+
+					data[pLevel * 3 + pSocial][aLevel*3 + aSocial] = row[4];
+				}
+
+				var result = [];
+				result.push(data);
+
+
+				req.resultObjects = result;
+				req.useJsonFormat = true;
+				
+				next();
+			} else {
+				next();
+			}
+		});
+
+/*
+
 		var data = [];
 		for (var i=0; i<9; i++) {
 			var datum = [];
@@ -348,10 +417,31 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		resultObjects.push(data);
 
 		req.useJsonFormat = true;
+
+
+		req.resultObjects = resultObjects;
+		next();
+
+		/**/
+
+	} else if (id == "allianceSuggestionList") {
+		var data = [];
+		for (var i=0; i<10; i++) {
+			var alliance = alliances[randomRangeInt(0, alliances.length-1)];
+			alliance.Social = randomRangeInt(0, 100);
+
+			data.push(alliance);
+		}
+
+		resultObjects.push(data);
+
+		req.useJsonFormat = true;
+
+		req.resultObjects = resultObjects;
+		next();
 	}
 
-	req.resultObjects = resultObjects;
-	next();
+	
 };
 
 
@@ -423,4 +513,14 @@ function generateAlliances(amount) {
 	}
 
 	return alliances;
+}
+
+function getContainedIndexOf(str, strArray) {
+	for (var i=0; i<strArray.length; i++) {
+		if (str.indexOf(strArray[i]) > -1) {
+			return i;
+		}
+	}
+
+	return -1;
 }
