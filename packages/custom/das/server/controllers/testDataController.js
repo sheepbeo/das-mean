@@ -340,7 +340,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		for (var i=0; i<9; i++) {
 			var datum = [];
 			for (var j=0; j<9; j++) {;
-				datum.push(1);
+				datum.push(randomRangeInt(0, 10));
 			};
 			data.push(datum);
 		}

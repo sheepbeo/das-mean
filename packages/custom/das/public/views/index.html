@@ -61,19 +61,19 @@
 		<div class="graph-block-wrapper">
 			<div class="graph-canvas-container big-column right">
 				<div class="graph-canvas-header">Level Distribution</div>
-				<div class="graph-canvas-wrapper">
+				<div class="table-container">
 					<table>
 						<tr>
-							<td ng-repeat="z in label4 track by $index">
+							<td class="row-header" ng-repeat="z in label4 track by $index">
 								<p>{{ z }}</p>
 							</td>
 						</tr>
 						<tr ng-repeat="x in data4 track by $index">
-							<td>
+							<td class="column-header">
 								<p>{{ x.label }}</p>
 							</td>
 							<td ng-repeat="y in x.data track by $index">
-								<p>{{ y }}</p>
+								<p ng-class="{ 'stressed' : y === 1 }">{{ y }}</p>
 							</td>
 						</tr>
 					</table>

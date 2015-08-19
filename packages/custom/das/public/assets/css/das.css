@@ -70,3 +70,8 @@
 .big-column {
 	width: 65%;
 }
+
+.stressed {
+	background-color: #F24C18;
+	color: #FFFFFF;
+}
