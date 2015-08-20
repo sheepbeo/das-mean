@@ -4,7 +4,7 @@
 	<div class="graph-block-container" >
 		<div class="graph-block-wrapper">
 			<div class="graph-canvas-container big-column left">
-				<div class="graph-canvas-header">Speedup Time Spent</div>
+				<div class="graph-canvas-header">Average amount of speedup used over time</div>
 				<div class="graph-canvas-wrapper">
 					<canvas id="bar" class="chart chart-bar" data="data1" labels="label1"></canvas>
 				</div>
@@ -12,9 +12,13 @@
 
 			<div class="graph-description-container small-column right">
 				<div class="description-wrapper">
-					Count of each category of speedup time spent.
+					Each speedup is time-marked based on how long player have played the game.
 					<br/>
-					Each column represent one category.
+					First column spike represents how many have completed the tutorial
+					<br/>
+					Each column later respresent trend of using mockup in later time.
+					<br/>
+					This graph demonstrates how well the first game tutorial has worked in term of teaching player to use Speedup.
 					<br/>
 				</div>
 			</div>
@@ -24,7 +28,7 @@
 	<div class="graph-block-container" >
 		<div class="graph-block-wrapper">
 			<div class="graph-canvas-container big-column right">
-				<div class="graph-canvas-header">Speedup Time Total</div>
+				<div class="graph-canvas-header">Total Speedup per player used over time</div>
 				<div class="graph-canvas-wrapper">
 					<canvas id="bar" class="chart chart-line" data="data2" labels="label2"></canvas>
 				</div>
@@ -32,7 +36,11 @@
 
 			<div class="graph-description-container small-column left">
 				<div class="description-wrapper">
-					Count of each category of construction time Total.
+					Count of total amount of speedup used over time.
+					<br/>
+					Higher number means higher usage of speedup function.
+					<br/>
+					Spike means event/sale was happening at that day.
 					<br/>
 				</div>
 			</div>
@@ -42,7 +50,7 @@
 	<div class="graph-block-container" >
 		<div class="graph-block-wrapper">
 			<div class="graph-canvas-container big-column left">
-				<div class="graph-canvas-header">Level Distribution</div>
+				<div class="graph-canvas-header">Churn reasons</div>
 				<div class="graph-canvas-wrapper">
 					<canvas id="doughnut" class="chart chart-doughnut" data="data3" labels="label3"></canvas> 
 				</div>
@@ -50,7 +58,7 @@
 
 			<div class="graph-description-container small-column right">
 				<div class="description-wrapper">
-					Level distribution of players spending speedup
+					Data is crunched in order to determine reasons for quiting.
 					<br/>
 				</div>
 			</div>
@@ -60,7 +68,7 @@
 	<div class="graph-block-container" >
 		<div class="graph-block-wrapper">
 			<div class="graph-canvas-container big-column right">
-				<div class="graph-canvas-header">Level Distribution</div>
+				<div class="graph-canvas-header">Alliance Suggestion Matrix</div>
 				<div class="table-container matrix">
 					<table>
 						<tr>
@@ -82,7 +90,11 @@
 
 			<div class="graph-description-container small-column left">
 				<div class="description-wrapper">
-					Level distribution of players spending speedup
+					Complex algorithm determines player/alliance categories.
+					<br/>
+					Grouping and caculations were done to produce this table.
+					<br/>
+					Mockup data were used in this sample.
 					<br/>
 				</div>
 			</div>
@@ -92,7 +104,7 @@
 	<div class="graph-block-container" >
 		<div class="graph-block-wrapper">
 			<div class="graph-canvas-container big-column left">
-				<div class="graph-canvas-header">Level Distribution</div>
+				<div class="graph-canvas-header">Alliance Suggestions</div>
 				<div class="table-container alliance">
 					<table>
 						<tr>

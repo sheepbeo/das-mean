@@ -403,42 +403,89 @@ exports.createEntriesOfType = function(req,res,next,id) {
 			}
 		});
 
-/*
-
-		var data = [];
-		for (var i=0; i<9; i++) {
-			var datum = [];
-			for (var j=0; j<9; j++) {;
-				datum.push(randomRangeInt(0, 10));
-			};
-			data.push(datum);
-		}
-
-		resultObjects.push(data);
-
-		req.useJsonFormat = true;
-
-
-		req.resultObjects = resultObjects;
-		next();
-
-		/**/
-
 	} else if (id == "allianceSuggestionList") {
-		var data = [];
-		for (var i=0; i<10; i++) {
-			var alliance = alliances[randomRangeInt(0, alliances.length-1)];
-			alliance.Social = randomRangeInt(0, 100);
 
-			data.push(alliance);
-		}
+		var httpOptions = {
+			url: 'http://cosmos.lab.fi-ware.org:14000/webhdfs/v1/user/cuong.le/out?op=open&user.name=cuong.le',
+			headers: {
+				'X-Auth-Token' : 'lCKVBFpuz3GffLV9YTwh8kfSllOiCr'
+			}
+		};
 
-		resultObjects.push(data);
+		request(httpOptions, function callback(error, response, body) {
+			if (!error) {
 
-		req.useJsonFormat = true;
+				var playerType = {
+					Level : 'Low',
+					Social : 'High'
+				};
+				
+				var entries = body.trim().split('\n');
 
-		req.resultObjects = resultObjects;
-		next();
+				var measuredLevels = ['Low', 'Mid', 'High'];
+				var socialness = [ 20, 50, 80 ];
+
+				var matrix = [];
+
+				for(var i=0; i<9; i++) {
+					var datum = [];
+					for (var j=0; j<9; j++) {
+						datum.push(0);
+					}
+					matrix.push(datum);
+				}
+
+				for(var i=0; i<entries.length; i++) {
+					var row = entries[i].split(/ |\t/);
+
+					var pLevel = getContainedIndexOf(row[0], measuredLevels);
+					var pSocial = getContainedIndexOf(row[1], measuredLevels);
+					var aLevel = getContainedIndexOf(row[2], measuredLevels);
+					var aSocial = getContainedIndexOf(row[3], measuredLevels);
+
+					matrix[pLevel * 3 + pSocial][aLevel*3 + aSocial] = row[4];
+				}
+
+				var data = [];
+				//var level = getContainedIndexOf(playerType.Level, measuredLevels);
+				//var social = getContainedIndexOf(playerType.Social, measuredLevels);
+
+				var matrixRow = matrix[getContainedIndexOf(playerType.Level, measuredLevels) * 3 + getContainedIndexOf(playerType.Level, measuredLevels)].slice();
+				var allianceTypeCounts = matrix[getContainedIndexOf(playerType.Level, measuredLevels) * 3 + getContainedIndexOf(playerType.Level, measuredLevels)].slice();
+
+				var sum = 0;
+				for (var i=0; i<allianceTypeCounts.length; i++) {
+					if (allianceTypeCounts[i] <= 0) {
+						if (RollChance(0.5)) {
+							allianceTypeCounts[i] = 1;
+						} else {
+							allianceTypeCounts[i] = 0;	
+						}
+					}
+					sum += allianceTypeCounts[i];
+				}
+
+				var allianceTypes = []
+				for (var i=0; i<allianceTypeCounts.length; i++) {
+					var count = allianceTypeCounts[i] / sum * 20;
+
+					console.log(count + ' ' + allianceTypeCounts[i] + ' ' + matrixRow[i]);
+				}
+
+				resultObjects.push(data);
+
+				req.resultObjects = resultObjects;
+				next();
+
+				req.useJsonFormat = true;
+				
+				next();
+			} else {
+				next();
+			}
+		});
+
+		
 	}
 
 	
