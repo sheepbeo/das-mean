@@ -7,8 +7,8 @@
 */
 
 /* jshint -W098 */
-angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 'Global', 'Speedup', 'TestData',
-  function($scope, Global, Speedup, TestData) {
+angular.module('mean.das', ['chart.js'])
+.controller('DasController', ['$scope', 'Global', 'Speedup', 'TestData', function($scope, Global, Speedup, TestData) {
     $scope.global = Global;
     $scope.package = {
       name: 'das'
@@ -35,6 +35,10 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
     $scope.series2 = [];
 
 	Chart.defaults.global.colours[0] = "#F27952";
+    //Chart.defaults.Doughnut.percentageInnerCutout = 50;
+    //Chart.defaults.global.legendTemplate = "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"; 
+    //Chart.defaults.Doughnut.legend = true;
+    //Chart.defaults.Doughnut.legendTemplate = "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"; 
 
 	var allSpeedups = [];
 	var timeMarks = [0, 5, 10, 30, 60, 120, 240, 480, 1440];
@@ -284,6 +288,11 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
         if (result) {
             $scope.label3 = ['Failed tutorial', 'Social abused', 'Not enough content' , 'Unsuitable alliance', 'Undefined'];
             $scope.data3 = data;
+            $scope.option3 = {
+                legend : true,
+                segmentShowStroke : true,
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+            }
         }
     });
     
