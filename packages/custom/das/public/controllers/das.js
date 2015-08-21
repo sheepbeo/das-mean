@@ -266,7 +266,7 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
     $scope.getTestData('crunchedSpeedupAverage', function(result, data) {
 
         if (result) {
-            $scope.label1 = ['0-5m', '5-10m', '10-15m' , '15-20m', '20-25m', '25-30m'];
+            $scope.label1 = ['0-5m', '5-10m', '10-15m' , '15-20m', '20-25m', '25-30m', '30-40m', '40-50m', '50-60m'];
             $scope.data1[0] = data;
         }
     });

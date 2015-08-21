@@ -325,7 +325,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		next();
 	} else if (id == "crunchedSpeedupAverage") {
 		resultObjects.push([
-			2.3, 1.2, 0.6, 0.4, 0.3, 0.3, 0.2
+			2.3, 1.2, 0.6, 0.4, 0.3, 0.3, 0.2, 0.3, 0.2
 		]);
 
 		req.useJsonFormat = true;
