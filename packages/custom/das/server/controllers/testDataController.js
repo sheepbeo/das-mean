@@ -63,7 +63,7 @@ exports.createEntries = function(req,res) {
 	var result = '';
 	if (req.useJsonFormat) {
 		for (var i=0; i<req.resultObjects.length - 1; i++) {
-			result += JSON.stringify(req.resultObjects[i]) + ',' + '\n';
+			result += JSON.stringify(req.resultObjects[i]) + ',' + '/n';
 		}
 
 		result += JSON.stringify(req.resultObjects[req.resultObjects.length - 1]);
@@ -325,7 +325,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		next();
 	} else if (id == "crunchedSpeedupAverage") {
 		resultObjects.push([
-			0.9, 0.5, 0.2, 0.11, 0.04
+			2.3, 1.2, 0.6, 0.4, 0.3, 0.3, 0.2
 		]);
 
 		req.useJsonFormat = true;
@@ -334,7 +334,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		next();
 	} else if (id == "crunchedSpeedupTotal") {
 		resultObjects.push([
-			0.9, 0.5, 0.2, 0.11, 0.04
+			0.91, 0.52, 0.26, 0.11, 0.42, 1.5, 2.3, 1.3, 0.4, 0.3, 0.25, 0.44, 0.36
 		]);
 
 		req.useJsonFormat = true;
@@ -344,7 +344,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 
 	} else if (id == "crunchedChurnReason") {
 		resultObjects.push([
-			100, 100, 100, 100, 100, 100
+			309, 102, 51, 21, 517
 		]);
 
 		req.useJsonFormat = true;
@@ -465,20 +465,43 @@ exports.createEntriesOfType = function(req,res,next,id) {
 					sum += allianceTypeCounts[i];
 				}
 
-				var allianceTypes = []
+				var quotas = [];
+				var counts = [];
 				for (var i=0; i<allianceTypeCounts.length; i++) {
-					var count = allianceTypeCounts[i] / sum * 20;
+					var quota = Math.floor(allianceTypeCounts[i] / sum * 20);
 
-					console.log(count + ' ' + allianceTypeCounts[i] + ' ' + matrixRow[i]);
+					console.log('i=' + i + ' quota= ' + quota + ' ' + allianceTypeCounts[i] + ' ' + matrixRow[i]);
+					quotas.push(quota);
+					counts.push(0);
 				}
+
+
+
+				for (var j=0; j<alliances.length; j++) {
+
+					for (var i=0; i<allianceTypeCounts.length; i++) {
+
+						if (counts[i] < quotas[i]) {
+							if ( Math.floor(i/3+1)*3 - 1.5 < alliances[j].Level && Math.floor(i/3+1)*3 + 1.5 > alliances[j].Level) {
+								var alliance = alliances[j];
+								alliance.Social = randomRangeInt(socialness[i%3]-10, socialness[i%3]+10);
+								data.push(alliance);
+								console.log('i=' + i + ' i%3=' + i%3 + ' social=' + alliance.Social);
+								counts[i]++;
+								break;
+							}	
+						}
+
+						
+					}
+
+					
+				}	
 
 				resultObjects.push(data);
 
 				req.resultObjects = resultObjects;
-				next();
-
 				req.useJsonFormat = true;
-				
 				next();
 			} else {
 				next();

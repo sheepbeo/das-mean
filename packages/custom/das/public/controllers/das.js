@@ -282,7 +282,7 @@ angular.module('mean.das', ['chart.js']).controller('DasController', ['$scope', 
     $scope.getTestData('crunchedChurnReason', function(result, data) {
 
         if (result) {
-            $scope.label3 = ['Failed tutorial', 'hi', 'hi' , 'hi', 'hi', 'Undefined'];
+            $scope.label3 = ['Failed tutorial', 'Social abused', 'Not enough content' , 'Unsuitable alliance', 'Undefined'];
             $scope.data3 = data;
         }
     });
