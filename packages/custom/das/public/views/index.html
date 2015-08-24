@@ -13,7 +13,7 @@
 
 			<div class="graph-description-container small-column right">
 				<div class="description-wrapper">
-					Each speedup is time-marked based on how long player have played the game.
+					Each speedup use is time-stamped based on how long a player has played the game.
 					<br/>
 					First column spike represents how many have completed the tutorial
 					<br/>
@@ -38,9 +38,9 @@
 
 			<div class="graph-description-container small-column left">
 				<div class="description-wrapper">
-					Count of total amount of speedup used over time.
+					Count of total amount of speedup used over time per player. 
 					<br/>
-					Higher number means higher usage of speedup function.
+					Higher number means higher usage of speedup function. 
 					<br/>
 					Spike means event/sale was happening at that day.
 					<br/>
@@ -60,7 +60,7 @@
 
 			<div class="graph-description-container small-column right">
 				<div class="description-wrapper">
-					Data is crunched in order to determine reasons for quiting.
+					This graph estimates reasons for quitting the game.
 					<br/>
 				</div>
 			</div>
@@ -82,8 +82,8 @@
 							<td class="column-header header">
 								<p>{{ x.label }}</p>
 							</td>
-							<td ng-repeat="y in x.data track by $index">
-								<p ng-class="{ 'stressed' : y === 1 }">{{ y }}</p>
+							<td ng-repeat="y in x.data track by $index" ng-class="{ 'stressed' : y >= 10 }">
+								<p >{{ y }}</p>
 							</td>
 						</tr>
 					</table>
@@ -92,7 +92,7 @@
 
 			<div class="graph-description-container small-column left">
 				<div class="description-wrapper">
-					Complex algorithm determines player/alliance categories.
+					Complex algorithm sorts players and alliances in categories based on level and sociability. 
 					<br/>
 					Grouping and caculations were done to produce this table.
 					<br/>
@@ -132,7 +132,7 @@
 
 			<div class="graph-description-container small-column right">
 				<div class="description-wrapper">
-					List of alliances suggested for a player of Low level and High Social
+					List of alliances suggested for an example player of Low level and High Social demographic.
 					<br/>
 				</div>
 			</div>

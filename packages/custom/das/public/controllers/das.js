@@ -318,7 +318,7 @@ angular.module('mean.das', ['chart.js'])
             labels.unshift('');
 
             $scope.label4 = labels;
-            $scope.data4 = displayData; 
+            $scope.data4 = displayData;
             /**/
         }
     });
