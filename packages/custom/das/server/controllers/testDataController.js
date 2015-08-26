@@ -325,7 +325,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		next();
 	} else if (id == "crunchedSpeedupAverage") {
 		resultObjects.push([
-			2.3, 1.2, 0.6, 0.4, 0.3, 0.3, 0.2, 0.3, 0.2
+			2.3, 3.2, 0.6, 0.4, 0.3, 0.3, 0.2, 0.3, 0.2
 		]);
 
 		req.useJsonFormat = true;
@@ -334,7 +334,7 @@ exports.createEntriesOfType = function(req,res,next,id) {
 		next();
 	} else if (id == "crunchedSpeedupTotal") {
 		resultObjects.push([
-			0.91, 0.52, 0.26, 0.11, 0.42, 1.5, 2.3, 1.3, 0.4, 0.3, 0.25, 0.44, 0.36, 0.29
+			0.91, 0.52, 0.80, 0.11, 0.42, 1.5, 2.3, 1.3, 0.4, 0.3, 0.25, 0.44, 0.36, 0.29
 		]);
 
 		req.useJsonFormat = true;
